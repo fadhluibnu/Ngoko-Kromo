@@ -1,0 +1,91 @@
+/* .content {
+  border-radius: 1rem;
+  overflow: hidden;
+} */
+body {
+  background-color: #f5faff;
+}
+.form {
+  width: 55%;
+  border-radius: 1rem;
+}
+.img {
+  width: 45%;
+}
+.img img {
+  width: 100%;
+}
+a.nav-link {
+  padding: 1rem 0;
+}
+
+/* content */
+.container-fluid .row .text {
+  font-weight: 700;
+  font-size: 4em;
+  line-height: 85px;
+
+  color: #26364e;
+}
+.container-fluid .row img {
+  width: 100%;
+}
+.container-fluid .row .rounded {
+  border-radius: 1.5rem !important;
+}
+.container-fluid .row form .menu {
+  width: 98%;
+  height: 50px;
+  background-color: white;
+  box-shadow: 0 0 0 0.25rem rgb(49 132 253 / 50%);
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+.container-fluid .row form .menu::-webkit-scrollbar {
+  display: none;
+  width: 20px;
+}
+.container-fluid .row form .menu::-webkit-scrollbar-thumb {
+  background-color: blue;
+}
+
+.container-fluid .row form .menu .nav-item {
+  display: block;
+  background: white;
+  width: 200px;
+  height: 50px;
+  line-height: 50px;
+  cursor: pointer;
+
+  font-weight: 500;
+  font-size: 18px;
+  color: #26364e;
+}
+.container-fluid .row form .menu .nav-item.active {
+  background: #2778f1;
+  color: white;
+  transition: 0.3s;
+}
+
+/* scroll */
+/* width */
+/* ::-webkit-scrollbar {
+  width: 20px;
+} */
+
+/* Track */
+/* ::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey;
+  border-radius: 10px;
+} */
+
+/* Handle */
+/* ::-webkit-scrollbar-thumb {
+  background: red;
+  border-radius: 10px;
+} */
+
+/* Handle on hover */
+/* ::-webkit-scrollbar-thumb:hover {
+  background: #b30000;
+} */

@@ -1,0 +1,33 @@
+
+    <?php //foreach ($kamus as $k_view) : ?>
+        <div id="<?= $k_view["ngoko"] ?>"> 
+            <!-- <a href="#close" class="close"></a>
+            <div class="content d-flex">
+                <div class="container p-3">
+                    <h3>Translate</h3>
+                    <div class="box-translate shadow mt-4 rounded">
+                        <div class="header">
+                            <ul class="navbar-nav shadow-sm">
+                                <li class="ngoko">NGOKO</li>
+                                <li class="kromo">KROMO</li>
+                            </ul>
+                        </div>
+                        <div class="content-view">
+                            <ul class="navbar-nav shadow-sm">
+                                <li class="ngoko-view"><?= //$k_view["ngoko"] ?></li>
+                                <li class="kromo-view"><?= //$k_view["kromo"]; ?></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+    <?php //endforeach; ?>
+
+
+
+    <?php
+                $kamus = query("SELECT * FROM kamus");
+                foreach ($kamus as $kms) : ?>
+                    <a href="#<?= $kms["ngoko"]; ?>" class="text m-2"><?= $kms["ngoko"]; ?> <i class="bi bi-caret-down"></i></a>
+                <?php endforeach; ?>
