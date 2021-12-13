@@ -1,6 +1,6 @@
-@import url("https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap");
 body {
-  font-family: "Rubik", sans-serif;
+  font-family: "Inter", sans-serif;
   color: #26364e;
 }
 .danger {
@@ -35,7 +35,7 @@ body {
   /* transform: translateY(-3px); */
 }
 #content {
-  height: 700px;
+  min-height: 700px;
 }
 
 .menu {
@@ -174,103 +174,27 @@ a.nav-link:hover {
   transform: translateY(0px);
 }
 
-/* #content .container a.text {
-  text-decoration: none;
-  font-size: 1.2em;
-  font-weight: 500;
-  color: #26364e;
-  padding: 7px 18px;
-  border: 1px solid #ced4da;
-  border-radius: 0.25rem;
-  transition: 0.5s;
+#myTab {
+  border: none;
 }
-#content .container a.text:hover {
-  border: 1px solid #86b7fe;
-  box-shadow: 0 0 0 0.25rem rgb(13 110 253 / 25%);
+.nav-tabs .nav-link.active,
+.nav-tabs .nav-link {
+  border: none0;
 }
-#content .container a.text:focus {
-  background-color: #0d5fda;
-  box-shadow: 0 0 0 0.25rem rgb(13 110 253 / 25%);
-  border: 1px solid #0d5fda;
-  color: white;
-} */
+
 h1 {
   font-weight: 700;
 }
-/* #kowe {
-  position: fixed;
-  z-index: 9999;
-  overflow: hidden;
-  transform: translateY(100vh);
-  transition: 0.5s;
+h1.pocung {
+  font-size: 1.4em;
+  font-weight: 700;
 }
-#close:target #kowe {
-  transform: translateY(100vh);
-}
-#kowe:target {
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  transform: translateY(0);
-}
-#kowe .content {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 600px;
-  background: white;
-  border-radius: 2rem 2rem 0 0;
-  box-shadow: 0px -3px 54px 3px rgb(0 0 0 / 16%);
-}
-#kowe .close {
-  position: absolute;
-  width: 100%;
-  height: 200px;
-}
-#kowe .container {
-  height: 80%;
-  margin: auto;
-}
-#kowe .header {
-  position: relative;
-  z-index: 10;
-}
-.rounded {
-  border-radius: 1.2rem !important;
-}
-.box-translate {
-  width: 100%;
-  height: auto;
-  overflow: hidden;
-}
-.content-view ul {
-  height: 300px;
-}
-
-#kowe .navbar-nav {
-  flex-direction: row;
-}
-#kowe li {
-  width: 50%;
-  padding: 1rem;
-  font-size: 1.2em;
-  font-weight: 500;
-}
-#kowe .ngoko-view,
-#kowe .kromo-view {
-  font-size: 1.1em;
+p.pPocung {
+  margin-bottom: 4px;
   font-weight: 400;
-  text-transform: capitalize;
+  color: #475364;
+  text-transform: none !important;
 }
-#kowe .kromo,
-#kowe .kromo-view {
-  color: white;
-  background-color: #2778f1;
+#content .ptext .text-1:hover p.pPocung {
+  color: rgb(235, 235, 235);
 }
-
-@media (max-width: 575.98px) {
-  #kowe .content {
-    height: 450px;
-  }
-} */

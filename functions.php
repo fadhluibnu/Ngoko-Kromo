@@ -17,7 +17,7 @@ function query($query)
 
 function searching_kamus($keyword)
 {
-    $query = query("SELECT * FROM kamus WHERE
+    $query = query("SELECT DISTINCT ngoko, kromo FROM kamus WHERE
                     ngoko LIKE '%$keyword%' OR
                     kromo LIKE '%$keyword%'");
 
@@ -30,7 +30,19 @@ function searching_pocung($keyword)
                     gatraLoro LIKE '%$keyword%' OR
                     gatraTelu LIKE '%$keyword%' OR
                     gatraPapat LIKE '%$keyword%' OR
-                    gatraLima LIKE '%$keyword%'");
+                    Judul LIKE '%$keyword%'");
+
+    return $query;
+}
+function searching_gambuh($keyword)
+{
+    $query = query("SELECT * FROM gambuh WHERE
+                    gatraSiji LIKE '%$keyword%' OR
+                    gatraLoro LIKE '%$keyword%' OR
+                    gatraTelu LIKE '%$keyword%' OR
+                    gatraPapat LIKE '%$keyword%' OR
+                    gatraLima LIKE '%$keyword%' OR
+                    Judul LIKE '%$keyword%'");
 
     return $query;
 }
@@ -45,16 +57,31 @@ function tambahKamus($dNgoko, $dKromo)
 
     return mysqli_affected_rows($koneksi);
 }
-function tambahPocung($gatraSiji, $gatraLoro, $gatraTelu, $gatraPapat, $gatraLima, $tegese)
+function tambahPocung($gatraSiji, $gatraLoro, $gatraTelu, $gatraPapat, $tegese, $judul)
 {
     global $koneksi;
     $siji = htmlspecialchars($gatraSiji);
     $loro = htmlspecialchars($gatraLoro);
     $telu = htmlspecialchars($gatraTelu);
     $papat = htmlspecialchars($gatraPapat);
+    $teges = htmlspecialchars($tegese);
+    $judule = htmlspecialchars($judul);
+    $query = "INSERT INTO pocung VALUES ('', '$siji', '$loro', '$telu', '$papat', '$teges', '$judule')";
+    mysqli_query($koneksi, $query);
+
+    return mysqli_affected_rows($koneksi);
+}
+function tambahGambuh($judul, $gatraSiji, $gatraLoro, $gatraTelu, $gatraPapat, $gatraLima, $tegese)
+{
+    global $koneksi;
+    $judule = htmlspecialchars($judul);
+    $siji = htmlspecialchars($gatraSiji);
+    $loro = htmlspecialchars($gatraLoro);
+    $telu = htmlspecialchars($gatraTelu);
+    $papat = htmlspecialchars($gatraPapat);
     $lima = htmlspecialchars($gatraLima);
     $teges = htmlspecialchars($tegese);
-    $query = "INSERT INTO pocung VALUES ('', '$siji', '$loro', '$telu', '$papat', '$lima', '$teges')";
+    $query = "INSERT INTO gambuh VALUES ('', '$judule', '$siji', '$loro', '$telu', '$papat', '$lima', '$teges')";
     mysqli_query($koneksi, $query);
 
     return mysqli_affected_rows($koneksi);

@@ -1,17 +1,19 @@
 <?php
 session_start();
-if (isset($_SESSION["requestKamus"])) {
-    header('Location: beranda/index.php');
+require 'functions.php';
+if (isset($_SESSION['request'])) {
+    header("Location: beranda/index.php");
     exit;
 }
 
-require 'functions.php';
 
-$kamus = query("SELECT * FROM kamus ORDER BY ngoko, kromo ASC");
-$pocung = query("SELECT * FROM pocung");
+$kamus = query("SELECT DISTINCT ngoko, kromo FROM kamus ORDER BY ngoko, kromo ASC");
+$pocung = query("SELECT DISTINCT * FROM pocung ORDER BY Judul ASC");
+$gambuh = query("SELECT DISTINCT * FROM gambuh ORDER BY judul ASC");
 if (isset($_POST["search"])) {
     $kamus = searching_kamus($_POST["keyword"]);
     $pocung = searching_pocung($_POST["keyword"]);
+    $gambuh = searching_gambuh($_POST['keyword']);
 }
 
 
@@ -73,7 +75,7 @@ if (isset($_POST["search"])) {
     <nav class="container-fluid menu sticky-top border-bottom p-1 pt-md-3 bg-light">
         <div class="container search">
             <form action="" method="POST" class="d-flex container">
-                <input class="form-control me-4" type="teks" name="keyword" placeholder="Temukan kata" aria-label="Search" required />
+                <input class="form-control me-4" type="teks" name="keyword" placeholder="Temukan kata" aria-label="Search" required autocomplete="off" />
                 <button class="btn btn-outline-primary d-flex" type="submit" name="search"><i class="bi bi-search me-md-2"></i><span class="d-none d-md-inline">Search</span></button>
                 <!-- <button class="btn btn-outline-primary d-flex d-md-none" type="submit"><i class="bi bi-search"></i></button> -->
             </form>
@@ -138,7 +140,7 @@ if (isset($_POST["search"])) {
 
     <div class="tab-content" id="myTabContent">
         <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-            <section id="content" class="mt-4">
+            <section id="content" class="mt-4 mb-4">
                 <div class="container">
                     <!-- <h1 class="mb-3">Kata</h1> -->
                     <div class="content">
@@ -153,7 +155,11 @@ if (isset($_POST["search"])) {
                                 <a href="" class="nav-link"><i class="bi bi-arrow-left-circle"></i> Beranda</a>
                         <?php
                             endif;
-                        endif; ?>
+                        endif;
+                        $get_jum = mysqli_query($koneksi, ('SELECT * FROM kamus'));
+                        $hasil = mysqli_num_rows($get_jum);
+                        echo $hasil;
+                        ?>
 
                         <?php foreach ($kamus as $kms) : ?>
                             <div class="ptext rounded border m-2">
@@ -193,13 +199,13 @@ if (isset($_POST["search"])) {
 
                         <?php foreach ($pocung as $pcg) : ?>
                             <div class="ptext rounded border m-2">
-                                <div class="text-1 d-flex justify-content-between">
+                                <div class="text-1 d-flex justify-content-between p-3">
                                     <div class="d-flex flex-column">
-                                        <p class="ps-3 pe-1 pt-2" style="margin: 0; font-size: 1.1rem ; font-weight: 500;"><?= $pcg["gatraSiji"]; ?></p>
-                                        <p class="ps-3 pe-1 pt-2" style="margin: 0; font-size: 1.1rem ; font-weight: 500;"><?= $pcg["gatraLoro"]; ?></p>
-                                        <p class="ps-3 pe-1 pt-2" style="margin: 0; font-size: 1.1rem ; font-weight: 500;"><?= $pcg["gatraTelu"]; ?></p>
-                                        <p class="ps-3 pe-1 pt-2" style="margin: 0; font-size: 1.1rem ; font-weight: 500;"><?= $pcg["gatraPapat"]; ?></p>
-                                        <p class="ps-3 pe-1 pt-2 pb-2" style="margin: 0; font-size: 1.1rem ; font-weight: 500;"><?= $pcg["gatraLima"]; ?></p>
+                                        <h1 id="pPocung" class="pocung"><?= $pcg["Judul"]; ?></h1>
+                                        <p id="pPocung1" class="pPocung"><?= $pcg["gatraSiji"]; ?></p>
+                                        <p id="pPocung2" class="pPocung"><?= $pcg["gatraLoro"]; ?></p>
+                                        <p id="pPocung3" class="pPocung"><?= $pcg["gatraTelu"]; ?></p>
+                                        <p id="pPocung4" class="pPocung"><?= $pcg["gatraPapat"]; ?></p>
                                     </div>
                                     <i class="ps-3 pe-3 pt-2 pb-2 bi bi-caret-down"></i>
                                 </div>
@@ -224,7 +230,7 @@ if (isset($_POST["search"])) {
                     <div class="content">
                         <?php
                         if (isset($_POST["search"])) :
-                            if ($kamus == array()) : ?>
+                            if ($gambuh == array()) : ?>
                                 <h5 class="ps-3">Hasil dari <span class="danger"><?php echo $_POST["keyword"] ?></span> tidak ditemukan</h5>
                                 <a href="" class="nav-link"><i class="bi bi-arrow-left-circle"></i> Beranda</a>
                             <?php
@@ -235,16 +241,25 @@ if (isset($_POST["search"])) {
                             endif;
                         endif; ?>
 
-                        <?php foreach ($kamus as $kms) : ?>
+                        <?php foreach ($gambuh as $gbh) : ?>
                             <div class="ptext rounded border m-2">
-                                <div class="text-1 d-flex justify-content-between">
-                                    <p class="ps-3 pe-1 pt-2 pb-2" style="margin: 0; font-size: 1.2rem ; font-weight: 600;"><?= $kms["ngoko"]; ?></p>
+                                <div class="text-1 d-flex justify-content-between p-3">
+                                    <div class="d-flex flex-column">
+                                        <h1 id="pGambuh" class="pocung"><?= $gbh["judul"]; ?></h1>
+                                        <p id="pGambuh1" class="pPocung"><?= $gbh["gatraSiji"]; ?></p>
+                                        <p id="pGambuh2" class="pPocung"><?= $gbh["gatraLoro"]; ?></p>
+                                        <p id="pGambuh3" class="pPocung"><?= $gbh["gatraTelu"]; ?></p>
+                                        <p id="pGambuh4" class="pPocung"><?= $gbh["gatraPapat"]; ?></p>
+                                        <p id="pGambuh5" class="pPocung"><?= $gbh["gatraLima"]; ?></p>
+                                    </div>
                                     <i class="ps-3 pe-3 pt-2 pb-2 bi bi-caret-down"></i>
                                 </div>
-                                <div class="terjemah">
-                                    <div class="text">
+                                <div class="terjemah pocung">
+                                    <div class="text pocung">
                                         <p class="m-0" style="font-weight:400;font-size: 1em;">Kromo :</p>
-                                        <p class="mt-3"><i class="bi bi-arrow-return-right"></i> <span class="rounded"><?= $kms["kromo"]; ?></span></p>
+                                        <div class="pembungkus">
+                                            <p class="mt-3 p"><?= $gbh["tegese"]; ?></p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

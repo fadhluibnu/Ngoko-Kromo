@@ -2,7 +2,54 @@
 session_start();
 require '../functions.php';
 
+// cek cookie
+if (isset($_COOKIE['idp']) && isset($_COOKIE['keyp'])) {
+    $id = $_COOKIE['idp'];
+    $key = $_COOKIE['keyp'];
 
+    // cek cookie
+    $result = mysqli_query($koneksi, "SELECT gatraSiji FROM gambuh WHERE id=$id");
+    $row = mysqli_fetch_assoc($result);
+
+
+    if ($key == hash('sha256', $row['gatraSiji'])) {
+        $_SESSION['request'] = true;
+    }
+}
+
+if (isset($_SESSION['request'])) {
+    header('Location: ../beranda/index.php');
+    exit;
+}
+if (isset($_POST['requestGambuh'])) {
+    if (tambahGambuh($_POST['judul'], $_POST['gSatu'], $_POST['gDua'], $_POST['gTiga'], $_POST['gEmpat'], $_POST['gLima'], $_POST['gTegese']) > 0) {
+        echo "
+        <script>
+        alert('Data Berhasil Ditambahkan [Gambuh]');
+        </script>
+        ";
+    } else {
+        echo "
+        <script>
+        alert('Data Gagal Ditambahkan [Gambuh]');
+        </script>
+        ";
+    }
+
+    $satu = $_POST["gSatu"];
+    $dua = $_POST["gDua"];
+    $result = mysqli_query($koneksi, "SELECT * FROM gambuh WHERE gatraSiji='$satu'");
+
+    if (mysqli_num_rows($result) >= 1) {
+        $row = mysqli_fetch_assoc($result);
+        $_SESSION['request'] = true;
+        setcookie('idp', $row['id'], time() + 4);
+        setcookie('keyp', hash('sha256', $row['gatraSiji']), time() + 4);
+
+        header('Location: ../beranda/index.php');
+        exit;
+    }
+}
 
 ?>
 
@@ -28,7 +75,7 @@ require '../functions.php';
 <body>
     <header class="navbar navbar-light mb-5 bg-light">
         <div class="container">
-            <a class="navbar-brand m-auto d-flex align-items-center" href="../index.php">
+            <a class="navbar-brand m-auto d-flex align-items-center" href="../">
                 <div class="img" style="width: 35px;">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 134.16 135.95">
                         <defs>
@@ -85,7 +132,7 @@ require '../functions.php';
                                 <div class="mb-3">
                                     <h2>Kamus</h2>
                                 </div>
-                                <form action="" method="post" id="dKamus">
+                                <!-- <form action="" method="post" id="dKamus">
                                     <div class="mb-3">
                                         <label for="ngoko">Bahasa Ngoko</label>
                                         <input class="form-control" type="text" id="ngoko" name="ngoko" placeholder="Bahasa Ngoko" required>
@@ -98,8 +145,8 @@ require '../functions.php';
                                         <a href="../" class="nav-link"><i class="bi bi-arrow-left-circle"></i> Beranda</a>
                                         <button name="requestKamus" type="submit" class="btn btn-primary"><i class="bi bi-check-circle"></i> Submit</button>
                                     </div>
-                                </form>
-                                <div class="spinner-grow text-primary d-none m-auto sKamus" role="status">
+                                </form> -->
+                                <div class="spinner-grow text-primary d-flex m-auto sKamus" role="status">
                                     <span class="visually-hidden">Loading...</span>
                                 </div>
                             </div>
@@ -109,7 +156,7 @@ require '../functions.php';
                                 <div class="mb-3">
                                     <h2>Pocung</h2>
                                 </div>
-                                <form action="" method="post" id="dPocung">
+                                <!-- <form action="" method="post" id="dPocung">
                                     <div class="mb-3">
                                         <label for="pSatu">Gatra Satu</label>
                                         <input class="form-control" type="text" id="pSatu" name="pSatu" placeholder="Gatra Satu" required>
@@ -138,8 +185,8 @@ require '../functions.php';
                                         <a href="../" class="nav-link"><i class="bi bi-arrow-left-circle"></i> Beranda</a>
                                         <button name="requestPocung" type="submit" class="btn btn-primary"><i class="bi bi-check-circle"></i> Submit</button>
                                     </div>
-                                </form>
-                                <div class="spinner-grow text-primary d-none m-auto sPocung" role="status">
+                                </form> -->
+                                <div class="spinner-grow text-primary d-flex m-auto sPocung" role="status">
                                     <span class="visually-hidden">Loading...</span>
                                 </div>
                             </div>
@@ -149,7 +196,11 @@ require '../functions.php';
                                 <div class="mb-3">
                                     <h2>Gambuh</h2>
                                 </div>
-                                <form action="" method="post" id="dGambuh">
+                                <form action="" method="POST" id="dGambuh">
+                                    <div class="mb-3">
+                                        <label for="judul">Judul</label>
+                                        <input class="form-control" type="text" id="judul" name="judul" placeholder="Judul" required>
+                                    </div>
                                     <div class="mb-3">
                                         <label for="gSatu">Gatra Satu</label>
                                         <input class="form-control" type="text" id="gSatu" name="gSatu" placeholder="Gatra Satu" required>
@@ -172,7 +223,7 @@ require '../functions.php';
                                     </div>
                                     <div class="mb-3">
                                         <label for="gTegese">Tegese</label>
-                                        <input class="form-control" type="text" id="gTegese" name="gTegese" placeholder="Gatra lima" required>
+                                        <input class="form-control" type="text" id="gTegese" name="gTegese" placeholder="Tegese" required>
                                     </div>
                                     <div class="d-flex justify-content-between mt-4">
                                         <a href="../" class="nav-link"><i class="bi bi-arrow-left-circle"></i> Beranda</a>

@@ -8,47 +8,46 @@ if (isset($_COOKIE['id']) && isset($_COOKIE['key'])) {
     $key = $_COOKIE['key'];
 
     // cek cookie
-    $result = mysqli_query($koneksi, "SELECT ngoko FROM kamus WHERE id='$id'");
+    $result = mysqli_query($koneksi, "SELECT ngoko FROM kamus WHERE id=$id");
     $row = mysqli_fetch_assoc($result);
 
 
-    if ($key === hash('sha256', $row['ngoko'])) {
-        $_SESSION['requestKamus'] = true;
+    if ($key == hash('sha256', $row['ngoko'])) {
+        $_SESSION['request'] = true;
     }
 }
 
-if (isset($_SESSION["requestKamus"])) {
+if (isset($_SESSION['request'])) {
     header('Location: ../beranda/index.php');
     exit;
 }
-if (isset($_POST["requestKamus"])) {
+if (isset($_POST['requestKamus'])) {
 
-    if (tambahKamus($_POST["ngoko"], $_POST["kromo"]) > 0) {
-        echo "
+    if (tambahKamus($_POST['ngoko'], $_POST['kromo']) >= 1) {
+?>
         <script>
-        alert('Data Berhasil Ditambahkan');
+            alert("Data Kamus berhasil di tambahkan")
         </script>
-        ";
+<?php
     } else {
         echo "
         <script>
-        alert('Data Gagal Ditambahkan');
+        alert('Data Gagal Ditambahkan [Kamus]');
         </script>
         ";
     }
 
-    $ngoko = $_POST['ngoko'];
-    $kromo = $_POST['kromo'];
+    $ngoko = $_POST["ngoko"];
+    $kromo = $_POST["kromo"];
     $result = mysqli_query($koneksi, "SELECT * FROM kamus WHERE ngoko = '$ngoko'");
 
-    if (mysqli_num_rows($result) === 1) {
+    if (mysqli_num_rows($result) >= 1) {
         $row = mysqli_fetch_assoc($result);
+        $_SESSION['request'] = true;
+        setcookie('id', $row['id'], time() + 2);
+        setcookie('key', hash('sha256', $row['ngoko']), time() + 2);
 
-        $_SESSION["requestKamus"] = true;
-        setcookie('id', $row['id'], time() + 1);
-        setcookie('key', hash('sha256', $row['ngoko']), time() + 1);
-
-        header('Location: ../beranda/index.php');
+        header("Location: ../beranda/index.php");
         exit;
     }
 }
@@ -77,7 +76,7 @@ if (isset($_POST["requestKamus"])) {
 <body>
     <header class="navbar navbar-light mb-5 bg-light">
         <div class="container">
-            <a class="navbar-brand m-auto d-flex align-items-center" href="../index.php">
+            <a class="navbar-brand m-auto d-flex align-items-center" href="../">
                 <div class="img" style="width: 35px;">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 134.16 135.95">
                         <defs>
@@ -134,7 +133,7 @@ if (isset($_POST["requestKamus"])) {
                                 <div class="mb-3">
                                     <h2>Kamus</h2>
                                 </div>
-                                <form action="" method="post" id="dKamus">
+                                <form action="" method="POST" id="dKamus">
                                     <div class="mb-3">
                                         <label for="ngoko">Bahasa Ngoko</label>
                                         <input class="form-control" type="text" id="ngoko" name="ngoko" placeholder="Bahasa Ngoko" required>
@@ -158,7 +157,7 @@ if (isset($_POST["requestKamus"])) {
                                 <div class="mb-3">
                                     <h2>Pocung</h2>
                                 </div>
-                                <form action="" method="post" id="dPocung">
+                                <!-- <form action="" method="post" id="dPocung">
                                     <div class="mb-3">
                                         <label for="pSatu">Gatra Satu</label>
                                         <input class="form-control" type="text" id="pSatu" name="pSatu" placeholder="Gatra Satu" required>
@@ -187,8 +186,8 @@ if (isset($_POST["requestKamus"])) {
                                         <a href="../" class="nav-link"><i class="bi bi-arrow-left-circle"></i> Beranda</a>
                                         <button name="requestPocung" type="submit" class="btn btn-primary"><i class="bi bi-check-circle"></i> Submit</button>
                                     </div>
-                                </form>
-                                <div class="spinner-grow text-primary d-none m-auto sPocung" role="status">
+                                </form> -->
+                                <div class="spinner-grow text-primary d-flex m-auto sPocung" role="status">
                                     <span class="visually-hidden">Loading...</span>
                                 </div>
                             </div>
@@ -198,7 +197,7 @@ if (isset($_POST["requestKamus"])) {
                                 <div class="mb-3">
                                     <h2>Gambuh</h2>
                                 </div>
-                                <form action="" method="post" id="dGambuh">
+                                <!-- <form action="" method="post" id="dGambuh">
                                     <div class="mb-3">
                                         <label for="gSatu">Gatra Satu</label>
                                         <input class="form-control" type="text" id="gSatu" name="gSatu" placeholder="Gatra Satu" required>
@@ -227,8 +226,8 @@ if (isset($_POST["requestKamus"])) {
                                         <a href="../" class="nav-link"><i class="bi bi-arrow-left-circle"></i> Beranda</a>
                                         <button name="requestGambuh" type="submit" class="btn btn-primary"><i class="bi bi-check-circle"></i> Submit</button>
                                     </div>
-                                </form>
-                                <div class="spinner-grow text-primary d-none m-auto sGambuh" role="status">
+                                </form> -->
+                                <div class="spinner-grow text-primary d-flex m-auto sGambuh" role="status">
                                     <span class="visually-hidden">Loading...</span>
                                 </div>
                             </div>
